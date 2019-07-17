@@ -1,4 +1,4 @@
 # Bindings for the hermes protocol
 hermes-python>=0.1
-pyserial>=0.1
-serial>=0.1
+pyserial
+serial
