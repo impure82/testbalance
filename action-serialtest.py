@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-import  ConfigParser
+import ConfigParser
 from hermes_python.hermes import Hermes
 from hermes_python.ffi.utils import MqttOptions
 from hermes_python.ontology import *
@@ -32,38 +32,13 @@ def subscribe_intent_callback(hermes, intentMessage):
 
 def action_wrapper(hermes, intentMessage, conf):
     import serial
-    from serial import Serial
-    import time
-    from time import sleep
-
-    # serial init.
-    self = serial.Serial()
-    self.baudrate = 9600
-    self.port = '/dev/ttyUSB0'
-    self.bytesize = 8
-    self.parity = 'N' 
-    self.stopbits = 1
-    self.xonxoff = True
-    self.timeout = 1
-    self.open()
-    
-    self.write(b'TI\r\n')
-    time.sleep(0.2)
-    repbytes = self.readline().decode('utf-8')
-    if repbytes[0:4] == 'TI S' or repbytes[0:4] == 'TI D': 
-        pass # it break just if you are in this break
-    else : # if the conditions are false : send the command again
-        self.write(b'ZI\r\n')
-        time.sleep(0.2)
-        repbytes = self.readline().decode('utf-8')
-        # waiting valueIme before write it
-        while repbytes[0:3] =='':
-            time.sleep(0.2) 
-            repbytes = self.readline().decode('utf-8')
-
-
-    # Entrez la phrase à prononcer pour valider l'action
-    result_sentence = 'La balance a bien été tarée'
+    port='/dev/ttyUSB0'
+    ser = serial.Serial(port,9600)
+    ser.isOpen()
+    ser.write(b"\n")
+    ser.write(b"Z")
+    ser.write(b"\r")
+    result_sentence = 'Tare de la balance'
     current_session_id = intentMessage.session_id
     hermes.publish_end_session(current_session_id, result_sentence)
 
